@@ -42,7 +42,7 @@ jobs:
         id: bump-semver
         with:
           current-version: ${{ env.OLD_VERSION }}
-          bump-level: ${{ github.event.inputs.release-type }
+          bump-level: ${{ github.event.inputs.release-type }}
         
       - name: Assign version number to release (Semver)
         if: ${{ github.event.inputs.version-number-override == '' }}
