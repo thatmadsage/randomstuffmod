@@ -58,12 +58,11 @@ jobs:
         run: |
           sed -i ./gradle.properties -e 's/^mod_version=.*$/mod_version=${{ env.NEW_VERSION }}/g'
 
-      - name: Commit report
+      - name: Commit version change
         run: |
-          git config --global user.name 'thatmadsage'
-          git config --global user.email '226867538+thatmadsage@users.noreply.github.com'
           git commit -am "Release version ${{ env.NEW_VERSION }}"
           git push
+          "VERSION_BUMP_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Build with Gradle
         run: ./gradlew build
@@ -73,5 +72,7 @@ jobs:
         id: gh_release
         with:
           name: 'v${{ env.NEW_VERSION }}'
+          tag_name: 'v${{ env.NEW_VERSION }}'
+          target_commitish: ${{ env.VERSION_BUMP_COMMIT }}
           files: |
             **/build/libs/*.jar
