@@ -34,7 +34,7 @@ jobs:
 
       - name: Get current version
         run: |
-          echo "OLD_VERSION=$(grep mod_version ./gradle.properties | sed -e 's/^mod_version=//g')"
+          echo "OLD_VERSION=$(grep mod_version ./gradle.properties | sed -e 's/^mod_version=//g')"  >> $GITHUB_ENV
 
       - name: Get version number to release (Semver)
         if: ${{ github.event.inputs.version-number-override == '' }}
