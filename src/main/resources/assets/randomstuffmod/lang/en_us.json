@@ -1,0 +1,13 @@
+{
+  "itemGroup.randomstuffmod": "Example Mod Tab",
+  "block.randomstuffmod.example_block": "Example Block",
+  "item.randomstuffmod.example_item": "Example Item",
+
+  "randomstuffmod.configuration.title": "Random Stuff Mod Configs",
+  "randomstuffmod.configuration.section.randomstuffmod.common.toml": "Random Stuff Mod Configs",
+  "randomstuffmod.configuration.section.randomstuffmod.common.toml.title": "Random Stuff Mod Configs",
+  "randomstuffmod.configuration.items": "Item List",
+  "randomstuffmod.configuration.logDirtBlock": "Log Dirt Block",
+  "randomstuffmod.configuration.magicNumberIntroduction": "Magic Number Text",
+  "randomstuffmod.configuration.magicNumber": "Magic Number"
+}

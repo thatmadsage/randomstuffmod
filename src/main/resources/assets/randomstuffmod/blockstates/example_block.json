@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "randomstuffmod:block/example_block"
+    }
+  }
+}
