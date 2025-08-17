@@ -9,14 +9,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.goal.OcelotAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.Tags.EntityTypes;
 
 public class ExampleBlock extends Block {
 
@@ -53,5 +55,8 @@ public class ExampleBlock extends Block {
         entity.kill();
         var cat = EntityType.CAT.spawn((ServerLevel) level, BlockPos.containing(entity_pos), MobSpawnType.CONVERSION);
         cat.setPos(entity_pos);
+        cat.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(cat, Player.class, true));
+        cat.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(cat, Wolf.class, true));
+        cat.goalSelector.addGoal(0, new OcelotAttackGoal(cat));
     }
 }
