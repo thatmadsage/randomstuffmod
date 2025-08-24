@@ -2,9 +2,11 @@ package io.github.thatmadsage.randomstuffmod.block;
 
 import java.util.List;
 
+import io.github.thatmadsage.randomstuffmod.effect.ModMobEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,5 +60,6 @@ public class ExampleBlock extends Block {
         cat.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(cat, Player.class, true));
         cat.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(cat, Wolf.class, true));
         cat.goalSelector.addGoal(0, new OcelotAttackGoal(cat));
+        cat.addEffect(new MobEffectInstance(ModMobEffects.DARK_SHROUD, MobEffectInstance.INFINITE_DURATION));
     }
 }
