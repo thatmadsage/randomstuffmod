@@ -23,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -60,10 +59,9 @@ public class FlashlightItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (!isActive(stack) || level.isClientSide || !(isSelected || slotId == -106)) {
+        if (!isActive(stack) || level.isClientSide || !(isSelected || (entity instanceof Player player && player.getOffhandItem() == (stack)))) {
             return;
         }
-        RandomStuffMod.LOGGER.info("active flashlight tick!!");
         var look_angle = entity.getLookAngle();
         var raycast_start = entity.getEyePosition();
         var raycast_end = raycast_start.add(look_angle.normalize().scale(6d));
@@ -72,17 +70,14 @@ public class FlashlightItem extends Item {
         var min_vec = minVec(List.of(raycast_start, raycast_end));
         var size = max_vec.subtract(min_vec);
         var center = max_vec.add(min_vec).scale(0.5);
-        
-        RandomStuffMod.LOGGER.info("size: " + size.toString());
 
         var bounds = AABB.ofSize(center, size.x+1, size.y+1, size.z+1);
 
-        var entities = level.getEntities(entity, bounds);
-        RandomStuffMod.LOGGER.info("found: " + entities.toString());
+        var entities = level.getEntities(entity, bounds); 
 
         for (var target_entity : entities) {
             if (target_entity instanceof LivingEntity living_entity){
-                if (target_entity.getBoundingBox().getCenter().subtract(raycast_start).normalize().dot(look_angle) > Math.cos(Math.PI/180*10)){
+                if (target_entity.getBoundingBox().clip(raycast_start, raycast_end).isPresent() && living_entity.hasLineOfSight(entity)){
                     living_entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 2));
                 }
             }
