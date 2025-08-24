@@ -1,6 +1,7 @@
 package io.github.thatmadsage.randomstuffmod;
 
-import io.github.thatmadsage.randomstuffmod.feature.flashlight.FlashlightItem;
+import io.github.thatmadsage.randomstuffmod.item.FlashlightItem;
+import io.github.thatmadsage.randomstuffmod.item.Items;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +34,7 @@ public class RandomStuffModClient {
         event.enqueueWork(() -> { // ItemProperties#register is not threadsafe, so we need to call it on the main thread
             ItemProperties.register(
                 // The item to apply the property to.
-                RandomStuffMod.FLASHLIGHT.get(),
+                Items.FLASHLIGHT.get(),
                 // The id of the property.
                 ResourceLocation.fromNamespaceAndPath(RandomStuffMod.MODID, "flashlight_active"),
                 // A reference to a method that calculates the override value.

@@ -1,10 +1,11 @@
-package io.github.thatmadsage.randomstuffmod.feature.flashlight;
+package io.github.thatmadsage.randomstuffmod.item;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.github.thatmadsage.randomstuffmod.RandomStuffMod;
-import io.github.thatmadsage.randomstuffmod.RandomStuffMod.FlashlightActiveRecord;
+import io.github.thatmadsage.randomstuffmod.component.DataComponents;
+import io.github.thatmadsage.randomstuffmod.component.DataComponents.FlashlightActiveRecord;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -45,8 +46,8 @@ public class FlashlightItem extends Item {
             0.3F,
             1.5f
         );
-        FlashlightActiveRecord flashlight_active = stack.get(RandomStuffMod.FLASHLIGHT_ACTIVE);
-        stack.set(RandomStuffMod.FLASHLIGHT_ACTIVE, new FlashlightActiveRecord(!flashlight_active.active()));
+        FlashlightActiveRecord flashlight_active = stack.get(DataComponents.FLASHLIGHT_ACTIVE);
+        stack.set(DataComponents.FLASHLIGHT_ACTIVE, new FlashlightActiveRecord(!flashlight_active.active()));
         return InteractionResultHolder.consume(stack);
     }
 
@@ -113,7 +114,7 @@ public class FlashlightItem extends Item {
     
 
     public boolean isActive(ItemStack stack) {
-        return stack.get(RandomStuffMod.FLASHLIGHT_ACTIVE).active();
+        return stack.get(DataComponents.FLASHLIGHT_ACTIVE).active();
     }
 
 }

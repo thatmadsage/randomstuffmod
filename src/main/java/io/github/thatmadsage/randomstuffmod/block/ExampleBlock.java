@@ -1,4 +1,4 @@
-package io.github.thatmadsage.randomstuffmod.feature.exampleblock;
+package io.github.thatmadsage.randomstuffmod.block;
 
 import java.util.List;
 
