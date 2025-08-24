@@ -39,7 +39,7 @@ public class RandomStuffModClient {
                 // A reference to a method that calculates the override value.
                 // Parameters are the used item stack, the level context, the player using the item,
                 // and a random seed you can use.
-                (stack, level, player, seed) -> FlashlightItem.getFlashlightActiveOverride(stack)
+                (stack, level, player, seed) -> ((FlashlightItem)stack.getItem()).isActive(stack)?1f:0f
             );
         });
     }
