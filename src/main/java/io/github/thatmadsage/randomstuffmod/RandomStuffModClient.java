@@ -1,6 +1,9 @@
 package io.github.thatmadsage.randomstuffmod;
 
+import io.github.thatmadsage.randomstuffmod.feature.flashlight.FlashlightItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -27,5 +30,17 @@ public class RandomStuffModClient {
         // Some client setup code
         RandomStuffMod.LOGGER.info("HELLO FROM CLIENT SETUP");
         RandomStuffMod.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        event.enqueueWork(() -> { // ItemProperties#register is not threadsafe, so we need to call it on the main thread
+            ItemProperties.register(
+                // The item to apply the property to.
+                RandomStuffMod.FLASHLIGHT.get(),
+                // The id of the property.
+                ResourceLocation.fromNamespaceAndPath(RandomStuffMod.MODID, "flashlight_active"),
+                // A reference to a method that calculates the override value.
+                // Parameters are the used item stack, the level context, the player using the item,
+                // and a random seed you can use.
+                (stack, level, player, seed) -> FlashlightItem.getFlashlightActiveOverride(stack)
+            );
+        });
     }
 }

@@ -3,10 +3,15 @@ package io.github.thatmadsage.randomstuffmod;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
@@ -33,6 +38,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import io.github.thatmadsage.randomstuffmod.feature.exampleblock.ExampleBlock;
+import io.github.thatmadsage.randomstuffmod.feature.flashlight.FlashlightItem;
+import io.netty.buffer.ByteBuf;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(RandomStuffMod.MODID)
@@ -46,7 +53,30 @@ public class RandomStuffMod {
     // Create a Deferred Register to hold Items which will all be registered under the "randomstuffmod" namespace
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
     // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "randomstuffmod" namespace
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);  
+    // Create a Deferred Register to hold DataComponents which will all be registered under the "randomstuffmod" namespace  
+    public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, MODID);
+
+    // dude why is maing a tag that much code
+        public record FlashlightActiveRecord(boolean active) {}
+        public static final Codec<FlashlightActiveRecord> FLASHLIGHT_ACTIVE_CODEC = RecordCodecBuilder.create(instance ->
+        instance.group(
+            Codec.BOOL.fieldOf("active").forGetter(FlashlightActiveRecord::active)
+        ).apply(instance, FlashlightActiveRecord::new)
+    );
+        public static final StreamCodec<ByteBuf, FlashlightActiveRecord> FLASHLIGHT_ACTIVE_STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.BOOL, FlashlightActiveRecord::active,
+        FlashlightActiveRecord::new
+    );
+        public static final DeferredHolder<DataComponentType<?>, DataComponentType<FlashlightActiveRecord>> FLASHLIGHT_ACTIVE = DATA_COMPONENTS.registerComponentType(
+        "flashlight_active",
+        builder -> builder
+            // The codec to read/write the data to disk
+            .persistent(FLASHLIGHT_ACTIVE_CODEC)
+            // The codec to read/write the data across the network
+            .networkSynchronized(FLASHLIGHT_ACTIVE_STREAM_CODEC)
+    );
+
 
     // Creates a new Block with the id "randomstuffmod:example_block", combining the namespace and path
     public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block", 
@@ -58,16 +88,17 @@ public class RandomStuffMod {
     public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
 
     // Creates a new food item with the id "randomstuffmod:example_id", nutrition 1 and saturation 2
-    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
-            .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
+    public static final DeferredItem<Item> FLASHLIGHT = ITEMS.registerItem(
+        "flashlight", registryName -> new FlashlightItem(new Item.Properties().component(FLASHLIGHT_ACTIVE.get(), new FlashlightActiveRecord(false)))
+        );
 
     // Creates a creative tab with the id "randomstuffmod:example_tab" for the example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.randomstuffmod")) //The language key for the title of your CreativeModeTab
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+            .icon(() -> FLASHLIGHT.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(FLASHLIGHT.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
@@ -82,6 +113,8 @@ public class RandomStuffMod {
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
+        // Register the Deferred Register to the mod event bus so data components get registered
+        DATA_COMPONENTS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (RandomStuffMod) to respond directly to events.

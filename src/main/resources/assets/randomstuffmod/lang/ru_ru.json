@@ -1,7 +1,7 @@
 {
   "itemGroup.randomstuffmod": "Example Mod Tab",
-  "block.randomstuffmod.example_block": "Catopocalypse Block",
-  "item.randomstuffmod.flashlight": "Flashlight",
+  "block.randomstuffmod.example_block": "Блок Котопокалипсиса",
+  "item.randomstuffmod.flashlight": "Фонарик",
 
   "randomstuffmod.configuration.title": "Random Stuff Mod Configs",
   "randomstuffmod.configuration.section.randomstuffmod.common.toml": "Random Stuff Mod Configs",
