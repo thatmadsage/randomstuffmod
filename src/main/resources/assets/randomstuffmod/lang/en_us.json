@@ -2,6 +2,7 @@
   "itemGroup.randomstuffmod": "Random Nonsense",
   "block.randomstuffmod.example_block": "Catopocalypse Block",
   "item.randomstuffmod.flashlight": "Flashlight",
+  "effect.randomstuffmod.dark_shroud": "Dark Shroud",
 
   "randomstuffmod.configuration.title": "Random Stuff Mod Configs",
   "randomstuffmod.configuration.section.randomstuffmod.common.toml": "Random Stuff Mod Configs",

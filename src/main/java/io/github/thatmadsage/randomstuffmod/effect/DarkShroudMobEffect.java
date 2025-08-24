@@ -3,10 +3,9 @@ package io.github.thatmadsage.randomstuffmod.effect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 
-public class GenericMobEffect extends MobEffect {
+public class DarkShroudMobEffect extends MobEffect {
 
-    public GenericMobEffect(MobEffectCategory category, int color) {
+    public DarkShroudMobEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
-    
 }

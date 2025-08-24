@@ -36,13 +36,14 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import io.github.thatmadsage.randomstuffmod.block.Blocks;
+import io.github.thatmadsage.randomstuffmod.block.ModBlocks;
 import io.github.thatmadsage.randomstuffmod.item.FlashlightItem;
-import io.github.thatmadsage.randomstuffmod.item.Items;
+import io.github.thatmadsage.randomstuffmod.item.ModItems;
 import io.github.thatmadsage.randomstuffmod.block.ExampleBlock;
-import io.github.thatmadsage.randomstuffmod.component.DataComponents;
-import io.github.thatmadsage.randomstuffmod.component.DataComponents.FlashlightActiveRecord;
-import io.github.thatmadsage.randomstuffmod.effect.MobEffects;
+import io.github.thatmadsage.randomstuffmod.component.ModDataComponents;
+import io.github.thatmadsage.randomstuffmod.component.ModDataComponents.FlashlightActiveRecord;
+import io.github.thatmadsage.randomstuffmod.effect.DarkShroudMobEffect;
+import io.github.thatmadsage.randomstuffmod.effect.ModMobEffects;
 import io.netty.buffer.ByteBuf;
 
 @Mod(RandomStuffMod.MODID)
@@ -54,24 +55,25 @@ public class RandomStuffMod {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.randomstuffmod"))
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> Items.FLASHLIGHT.get().getDefaultInstance())
+            .icon(() -> ModItems.FLASHLIGHT.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                output.accept(Items.FLASHLIGHT.get());
-                output.accept(Items.EXAMPLE_BLOCK_ITEM.get());
+                output.accept(ModItems.FLASHLIGHT.get());
+                output.accept(ModItems.EXAMPLE_BLOCK_ITEM.get());
             }).build());
 
 
     public RandomStuffMod(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
-        Blocks.BLOCKS.register(modEventBus);
-        Items.ITEMS.register(modEventBus);
-        DataComponents.DATA_COMPONENTS.register(modEventBus);
-        MobEffects.MOB_EFFECTS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
+        ModDataComponents.DATA_COMPONENTS.register(modEventBus);
+        ModMobEffects.MOB_EFFECTS.register(modEventBus);
         
         CREATIVE_MODE_TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(EventHandler.class);
         
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

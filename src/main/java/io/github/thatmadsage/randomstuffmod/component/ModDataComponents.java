@@ -12,11 +12,10 @@ import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class DataComponents {
-    // Create a Deferred Register to hold DataComponents which will all be registered under the "randomstuffmod" namespace  
+public class ModDataComponents {
     public static final DeferredRegister.DataComponents DATA_COMPONENTS = 
         DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, RandomStuffMod.MODID);
-        
+
     // dude why is maing a tag that much code
     public record FlashlightActiveRecord(boolean active) {}
     public static final Codec<FlashlightActiveRecord> FLASHLIGHT_ACTIVE_CODEC = RecordCodecBuilder.create(instance ->

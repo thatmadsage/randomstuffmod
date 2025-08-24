@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class Blocks {
+public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(RandomStuffMod.MODID);
 
     public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block", 

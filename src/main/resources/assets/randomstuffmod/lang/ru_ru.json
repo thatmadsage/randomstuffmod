@@ -1,13 +1,6 @@
 {
-  "itemGroup.randomstuffmod": "Разная Фигня",
+  "itemGroup.randomstuffmod": "Разная фигня",
   "block.randomstuffmod.example_block": "Блок Котопокалипсиса",
   "item.randomstuffmod.flashlight": "Фонарик",
-
-  "randomstuffmod.configuration.title": "Random Stuff Mod Configs",
-  "randomstuffmod.configuration.section.randomstuffmod.common.toml": "Random Stuff Mod Configs",
-  "randomstuffmod.configuration.section.randomstuffmod.common.toml.title": "Random Stuff Mod Configs",
-  "randomstuffmod.configuration.items": "Item List",
-  "randomstuffmod.configuration.logDirtBlock": "Log Dirt Block",
-  "randomstuffmod.configuration.magicNumberIntroduction": "Magic Number Text",
-  "randomstuffmod.configuration.magicNumber": "Magic Number"
+  "effect.randomstuffmod.dark_shroud": "Покров Тени"
 }
